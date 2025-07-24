@@ -6,7 +6,6 @@ from schemas import  UserCreateRequest, UserUpdateRequest, RecordCreateRequest, 
 from fastapi import HTTPException
 
 
-
 class AsyncCRUD:
 
 
@@ -15,6 +14,7 @@ class AsyncCRUD:
 #                                      ASYNC USER CRUD
 #================================================================================================
 
+    @staticmethod
     async def create_user(user: UserCreateRequest, db: AsyncSession):
         new_user = User(**user.model_dump())
         db.add(new_user)
@@ -23,6 +23,7 @@ class AsyncCRUD:
         return new_user
 
 
+    @staticmethod
     async def read_user(user_id: int, db: AsyncSession):
         result = await db.execute(select(User).where(User.id == user_id))
         user = result.scalar_one_or_none()
@@ -31,6 +32,7 @@ class AsyncCRUD:
         return user
 
 
+    @staticmethod
     async def update_user(user_id: int, user_update: UserUpdateRequest, db: AsyncSession):
 
         result = await db.execute(select(User).where(User.id == user_id))
@@ -48,6 +50,7 @@ class AsyncCRUD:
         return db_user
 
 
+    @staticmethod
     async def delete_user(user_id: int, db: AsyncSession):
         result = await db.execute(select(User).where(User.id == user_id))
         user = result.scalar_one_or_none()
@@ -64,14 +67,16 @@ class AsyncCRUD:
     #================================================================================================
 
 
+    @staticmethod
     async def create_record(user_id: int, record: RecordCreateRequest, db: AsyncSession):
-        new_record = Record(**record.model_dump())
+        new_record = Record(**record.model_dump(), user_id=user_id)
         db.add(new_record)
         await db.commit()
         await db.refresh(new_record)
         return new_record
 
 
+    @staticmethod
     async def read_record(record_id: int, db: AsyncSession):
         result = await db.execute(select(Record).where(Record.id == record_id))
         record = result.scalar_one_or_none()
@@ -80,6 +85,7 @@ class AsyncCRUD:
         return record
 
 
+    @staticmethod
     async def update_record(record_id: int, record_update: RecordUpdateRequest, db: AsyncSession):
 
         result = await db.execute(select(Record).where(Record.id == record_id))
@@ -97,6 +103,7 @@ class AsyncCRUD:
         return record
 
 
+    @staticmethod
     async def delete_record(record_id: int, db: AsyncSession):
 
         result = await db.execute(select(Record).where(Record.id == record_id))

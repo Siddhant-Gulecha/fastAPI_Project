@@ -13,6 +13,7 @@ class SyncCRUD:
     #================================================================================================
 
 
+    @staticmethod
     def create_user(user: UserCreateRequest, db: Session ):
         new_user = User(**user.model_dump())
         db.add(new_user)
@@ -22,6 +23,7 @@ class SyncCRUD:
 
 
 
+    @staticmethod
     def read_user(user_id: int, db: Session ):
         user = db.query(User).filter(User.id == user_id).first()
         if not user:
@@ -30,6 +32,7 @@ class SyncCRUD:
 
 
 
+    @staticmethod
     def update_user(user_id: int, user_update: UserUpdateRequest, db: Session ):
         user = db.query(User).filter(User.id == user_id).first()
         if not user:
@@ -44,6 +47,7 @@ class SyncCRUD:
 
 
 
+    @staticmethod
     def delete_user(user_id: int, db: Session ):
         user = db.query(User).filter(User.id == user_id).first()
         if not user:
@@ -60,8 +64,9 @@ class SyncCRUD:
 
 
 
+    @staticmethod
     def create_record(user_id: int, record: RecordCreateRequest, db: Session ):
-        new_record = Record(**record.model_dump())
+        new_record = Record(**record.model_dump(), user_id=user_id)
         db.add(new_record)
         db.commit()
         db.refresh(new_record)
@@ -69,6 +74,7 @@ class SyncCRUD:
 
 
 
+    @staticmethod
     def read_record(record_id: int, db: Session ):
         record = db.query(Record).filter(Record.id == record_id).first()
         if not record:
@@ -77,6 +83,7 @@ class SyncCRUD:
 
 
 
+    @staticmethod
     def update_record(record_id: int, record_update: RecordUpdateRequest, db: Session ):
         record = db.query(Record).filter(Record.id == record_id).first()
         if not record:
@@ -91,6 +98,7 @@ class SyncCRUD:
 
 
 
+    @staticmethod
     def delete_record(record_id: int, db: Session ):
         record = db.query(Record).filter(Record.id == record_id).first()
         if not record:
