@@ -21,7 +21,7 @@ class UserResponse(BaseModel):
     email: EmailStr
     age: int
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 # ----- Record Schemas -----
 class RecordCreateRequest(BaseModel):
@@ -39,4 +39,4 @@ class RecordResponse(BaseModel):
     record_data: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True

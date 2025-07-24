@@ -1,14 +1,13 @@
 from fastapi import FastAPI, Depends
 from sqlalchemy.ext.asyncio.session import AsyncSession
 from sqlalchemy.orm import Session
-from database import get_sync_mysql_db, get_sync_postgres_db, get_async_mysql_db, get_async_postgres_db, Base, \
-    sync_pg_engine, sync_mysql_engine
-from routers import sync_crud, async_crud
+from database import get_sync_mysql_db, get_sync_postgres_db, get_async_mysql_db, get_async_postgres_db
+from controller import sync_pg_controller, async_pg_controller
 
 app = FastAPI()
 
-app.include_router(sync_crud.router)
-app.include_router(async_crud.router)
+app.include_router(async_pg_controller.router)
+app.include_router(sync_pg_controller.router)
 
 
 @app.get("/check-sync-mysql-connection")
